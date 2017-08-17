@@ -13,8 +13,8 @@ import (
 
 func main() {
 
-	http.HandleFunc("/", handle)
-	http.HandleFunc("/tasks", taskHandle)
+	http.HandleFunc("/", put)
+	http.HandleFunc("/tasks", get)
 	http.HandleFunc("/_ah/health", healthCheckHandler)
 	log.Print("Listening on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -39,8 +39,19 @@ type datastoreDB struct {
 
 type PropsService interface {
 	GetKey(key string) string
+	PutKey(key string, task *Task)
 }
 
+func (db *datastoreDB) PutKey(key string, task *Task) {
+	ctx := context.Background()
+	q := datastore.NameKey(kind, key, nil)
+
+	// Saves the new entity.
+	if _, err := db.client.Put(ctx, q, task); err != nil {
+		log.Fatalf("Failed to save task: %v", err)
+	}
+
+}
 func (db *datastoreDB) GetKey(key string) string {
 
 	ctx := context.Background()
@@ -85,52 +96,28 @@ func gcid() string {
 	return os.Getenv("GCLOUD_PROJECT")
 }
 
-func taskHandle(w http.ResponseWriter, r *http.Request) {
+func get(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/tasks" {
 		http.NotFound(w, r)
 		return
 	}
 
-	t := DB.GetKey("sampletask2")
+	t := DB.GetKey("sampletask3")
 	fmt.Fprint(w, t)
 
 }
 
-func handle(w http.ResponseWriter, r *http.Request) {
+func put(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
 
-	ctx := context.Background()
-
-	for _, e := range os.Environ() {
-		log.Println(e)
-	}
-
-	// Creates a client.
-	client, err := datastore.NewClient(ctx, gcid())
-
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-
-	// Sets the kind for the new entity.
-	kind := "Task"
-	// Sets the name/ID for the new entity.
-	name := "sampletask2"
-	// Creates a Key instance.
-	taskKey := datastore.NameKey(kind, name, nil)
-
-	// Creates a Task instance.
 	task := Task{
-		Description: "Buy milk2",
+		Description: "Buy milk3",
 	}
 
-	// Saves the new entity.
-	if _, err := client.Put(ctx, taskKey, &task); err != nil {
-		log.Fatalf("Failed to save task: %v", err)
-	}
+	DB.PutKey("sampletask3", &task)
 
 	fmt.Fprint(w, "hello from db")
 
