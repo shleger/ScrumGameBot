@@ -25,6 +25,16 @@ type datastoreDB struct {
 	client *datastore.Client
 }
 
+type PropsService interface {
+	getByKey(key string) (val string)
+}
+
+//var _ PropsService = &datastoreDB{}
+
+func (db *datastoreDB) getByKey(key string) {
+
+}
+
 type Task struct {
 	Description string
 }
@@ -35,6 +45,11 @@ type Post struct {
 	PublishedAt time.Time
 }
 
+//get gcloud project id
+func gcid() string {
+	return os.Getenv("GCLOUD_PROJECT")
+}
+
 func taskHandle(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/tasks" {
 		http.NotFound(w, r)
@@ -43,11 +58,8 @@ func taskHandle(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	// Set your Google Cloud Platform project ID.
-	projectID := os.Getenv("DATASTORE_PROJECT_ID")
-
 	// Creates a client.
-	client, err := datastore.NewClient(ctx, projectID)
+	client, err := datastore.NewClient(ctx, gcid())
 
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
@@ -77,11 +89,12 @@ func handle(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	// Set your Google Cloud Platform project ID.
-	projectID := os.Getenv("DATASTORE_PROJECT_ID")
+	for _, e := range os.Environ() {
+		log.Println(e)
+	}
 
 	// Creates a client.
-	client, err := datastore.NewClient(ctx, projectID)
+	client, err := datastore.NewClient(ctx, gcid())
 
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
