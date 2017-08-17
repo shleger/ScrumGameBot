@@ -21,17 +21,38 @@ func main() {
 
 }
 
+var (
+	kind = "Task"
+	err  error
+	DB   PropsService
+)
+
+func init() {
+	DB, err = newDatastoreDB()
+	log.Print("Init Datastore  Done")
+
+}
+
 type datastoreDB struct {
 	client *datastore.Client
 }
 
 type PropsService interface {
-	getByKey(key string) (val string)
+	GetKey(key string) string
 }
 
-//var _ PropsService = &datastoreDB{}
+func (db *datastoreDB) GetKey(key string) string {
 
-func (db *datastoreDB) getByKey(key string) {
+	ctx := context.Background()
+	q := datastore.NameKey(kind, key, nil)
+
+	task := Task{}
+	if err := db.client.Get(ctx, q, &task); err != nil {
+		log.Fatalf("Failed  to get  task with datastoreDB: %v", err)
+
+	}
+
+	return task.Description
 
 }
 
@@ -45,6 +66,20 @@ type Post struct {
 	PublishedAt time.Time
 }
 
+func newDatastoreDB() (PropsService, error) {
+	ctx := context.Background()
+	client, err := datastore.NewClient(ctx, gcid())
+
+	if err != nil {
+		return nil, fmt.Errorf("Failed to create client: %v", err)
+
+	}
+
+	return &datastoreDB{
+		client: client,
+	}, nil
+}
+
 //get gcloud project id
 func gcid() string {
 	return os.Getenv("GCLOUD_PROJECT")
@@ -56,28 +91,8 @@ func taskHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
-
-	// Creates a client.
-	client, err := datastore.NewClient(ctx, gcid())
-
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-
-	kind := "Task"
-
-	key := datastore.NameKey(kind, "sampletask2", nil)
-
-	task := Task{}
-
-	fmt.Fprint(w, "Start output Task")
-
-	if err := client.Get(ctx, key, &task); err != nil {
-		log.Fatalf("Failed  to get  task: %v", err)
-	}
-
-	fmt.Fprint(w, task.Description)
+	t := DB.GetKey("sampletask2")
+	fmt.Fprint(w, t)
 
 }
 
