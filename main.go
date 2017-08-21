@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ScrumGameBot/domain"
 	"context"
 	"fmt"
 	"log"
@@ -16,6 +17,7 @@ func main() {
 	http.HandleFunc("/", put)
 	http.HandleFunc("/tasks", get)
 	http.HandleFunc("/_ah/health", healthCheckHandler)
+	http.HandleFunc("/echo", echo)
 	log.Print("Listening on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
@@ -26,6 +28,10 @@ var (
 	err  error
 	DB   PropsService
 )
+
+func echo(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+}
 
 func init() {
 	DB, err = newDatastoreDB()
@@ -39,10 +45,10 @@ type datastoreDB struct {
 
 type PropsService interface {
 	GetKey(key string) string
-	PutKey(key string, task *Task)
+	PutKey(key string, task *domain.Task)
 }
 
-func (db *datastoreDB) PutKey(key string, task *Task) {
+func (db *datastoreDB) PutKey(key string, task *domain.Task) {
 	ctx := context.Background()
 	q := datastore.NameKey(kind, key, nil)
 
@@ -65,10 +71,6 @@ func (db *datastoreDB) GetKey(key string) string {
 
 	return task.Description
 
-}
-
-type Task struct {
-	Description string
 }
 
 type Post struct {
@@ -113,7 +115,7 @@ func put(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task := Task{
+	task := domain.Task{
 		Description: "Buy milk3",
 	}
 
