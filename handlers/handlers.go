@@ -3,6 +3,7 @@ package handlers
 import (
 	"ScrumGameBot/datastore"
 	"ScrumGameBot/domain"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -23,6 +24,18 @@ func Hook(w http.ResponseWriter, r *http.Request) {
 
 		}
 		log.Println("HOOK_JSON:" + string(body))
+
+		mapping := domain.EchoResponce{}
+
+		if err := json.Unmarshal(body, &mapping); err != nil {
+			log.Printf("Unmarshall %v ", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+
+		}
+
+		log.Println(mapping.ID)
+		log.Println(mapping.Message.From.FirstName)
 
 	}
 }

@@ -14,7 +14,7 @@ type EchoResponce struct {
 //telegram message
 type Message struct {
 	ID   uint32 `json:"message_id"`
-	From User   `json:"user"`
+	From User   `json:"from"`
 	Date uint32 `json:"date"`
 	Chat Chat   `json:"chat"`
 	Text string `json:"text"`
@@ -31,7 +31,9 @@ type User struct {
 
 //telegrm chat struct
 type Chat struct {
-	ID    uint32 `json:"id"`
-	Type  string `json:"type"`
-	Title string `json:"title"`
+	ID       uint32 `json:"id"`
+	Type     string `json:"type"`
+	Title    string `json:"title"`
+	LastName string `json:"last_name"`
+	UserName string `json:"user_name"`
 }

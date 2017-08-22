@@ -17,9 +17,6 @@ var (
 	DB   PropsService
 )
 
-//TODO del
-//{"update_id":501758830, "message":{"message_id":10,"from":{"id":389814768,"first_name":"Andr","last_name":"Lname","language_code":"en-US"},"chat":{"id":389814768,"first_name":"Andr","last_name":"Lname","type":"private"},"date":1503348017,"text":"Aaa123"}}
-
 func init() {
 	DB, err = newDatastoreDB()
 	log.Print("Init Datastore  Done")
