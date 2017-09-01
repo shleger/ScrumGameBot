@@ -5,6 +5,12 @@ type Task struct {
 	Description string
 }
 
+//Token store
+type Props struct {
+	Key string
+	Val string
+}
+
 //echo resp
 type EchoResponce struct {
 	ID      uint32  `json:"update_id"`

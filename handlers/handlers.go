@@ -14,6 +14,7 @@ import (
 func Hook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.URL.Path == "/hook" && r.Method == "POST" {
+
 		body, err := ioutil.ReadAll(r.Body)
 		//		messg := EchoResponce{}
 		//		json.Unmarshall(body, &messg)
@@ -47,7 +48,7 @@ func GetTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t := datastore.DB.GetKey("sampletask3")
+	t := datastore.DB.GetToken("TEST_TOKEN", "auth")
 	fmt.Fprint(w, t)
 
 }

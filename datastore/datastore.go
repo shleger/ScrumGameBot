@@ -19,7 +19,7 @@ var (
 
 func init() {
 	DB, err = newDatastoreDB()
-	log.Print("Init Datastore  Done")
+	log.Printf("Init Datastore done for GCLOUD_PROJECT=[%s]", gcid())
 
 }
 
@@ -30,13 +30,13 @@ type datastoreDB struct {
 type PropsService interface {
 	GetKey(key string) string
 	PutKey(key string, task *domain.Task)
+	GetToken(key string, ns string) string
 }
 
 func (db *datastoreDB) PutKey(key string, task *domain.Task) {
 	ctx := context.Background()
 	q := datastore.NameKey(kind, key, nil)
-	//eeee
-	// Saves the new entity.
+	// Save new entity.
 	if _, err := db.client.Put(ctx, q, task); err != nil {
 		log.Fatalf("Failed to save task: %v", err)
 	}
@@ -54,6 +54,22 @@ func (db *datastoreDB) GetKey(key string) string {
 	}
 
 	return task.Description
+
+}
+
+func (db *datastoreDB) GetToken(key string, ns string) string {
+	ctx := context.Background()
+	q := datastore.NewQuery("Props").Namespace(ns).Filter("Key =", key)
+
+	var prop []domain.Props
+
+	if _, err := db.client.GetAll(ctx, q, &prop); err != nil {
+		log.Fatalf("Failed  to get  prop [%s]  with datastoreDB: %v", key, err)
+
+	}
+
+	//TODO impl Error()
+	return prop[0].Val
 
 }
 

@@ -24,7 +24,9 @@ func init() {
 	userURL = fmt.Sprintf("%s/hook", server.URL)
 }
 
-func TestHook(t *testing.T) {
+func TestMapping(t *testing.T) {
+
+	defer server.Close()
 
 	reader = strings.NewReader(jsonPost)
 	req, err := http.NewRequest("POST", userURL, reader)
