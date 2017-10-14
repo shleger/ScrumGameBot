@@ -31,6 +31,11 @@ type PropsService interface {
 	GetKey(key string) string
 	PutKey(key string, task *domain.Task)
 	GetToken(key string, ns string) string
+	EchoTask(key string) string
+}
+
+func (db *datastoreDB) EchoTask(key string) string {
+	return "RealStub+" + key
 }
 
 func (db *datastoreDB) PutKey(key string, task *domain.Task) {

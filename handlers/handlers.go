@@ -10,6 +10,21 @@ import (
 	"net/http"
 )
 
+type App struct {
+	db datastore.PropsService
+}
+
+//Echo is telegram echo handler
+func (a *App) Echo(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/echo" {
+		http.NotFound(w, r)
+		return
+	}
+
+	resp := a.db.EchoTask("echoKey")
+	fmt.Fprint(w, resp)
+}
+
 //Hook - telegram WebHook
 func Hook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

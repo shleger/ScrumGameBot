@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"ScrumGameBot/datastore"
+	"ScrumGameBot/domain"
 	"fmt"
 	"io"
 	"net/http"
@@ -43,6 +45,44 @@ func TestMapping(t *testing.T) {
 
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("Resp Error code %v", resp.StatusCode)
+	}
+
+}
+
+type PropServiceTest struct {
+	db datastore.PropsService
+}
+
+func (c PropServiceTest) EchoTask(key string) string {
+	return "TestStub+" + key
+}
+
+func (c PropServiceTest) GetKey(string) string {
+	return "TestStub1"
+}
+
+func (c PropServiceTest) GetToken(string, string) string {
+	return "TestStub2"
+}
+
+func (c PropServiceTest) PutKey(string, *domain.Task) {
+
+}
+
+func TestEcho(t *testing.T) {
+
+	app := &App{db: &PropServiceTest{}}
+
+	req, _ := http.NewRequest("GET", "/echo", nil)
+	w := httptest.NewRecorder()
+
+	app.Echo(w, req)
+
+	actual := w.Body.String()
+	expected := "TestStub+echoKey"
+
+	if expected != actual {
+		t.Errorf("Expected %s but got %s", expected, actual)
 	}
 
 }
