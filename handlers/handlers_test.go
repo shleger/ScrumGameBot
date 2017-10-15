@@ -50,7 +50,7 @@ func TestMapping(t *testing.T) {
 }
 
 type PropServiceTest struct {
-	db datastore.PropsService
+	DbSrv datastore.PropsService
 }
 
 func (c PropServiceTest) EchoTask(key string) string {
@@ -71,7 +71,7 @@ func (c PropServiceTest) PutKey(string, *domain.Task) {
 
 func TestEcho(t *testing.T) {
 
-	app := &App{db: &PropServiceTest{}}
+	app := &App{DbSrv: &PropServiceTest{}}
 
 	req, _ := http.NewRequest("GET", "/echo", nil)
 	w := httptest.NewRecorder()

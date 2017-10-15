@@ -11,7 +11,7 @@ import (
 )
 
 type App struct {
-	db datastore.PropsService
+	DbSrv datastore.PropsService
 }
 
 //Echo is telegram echo handler
@@ -21,7 +21,7 @@ func (a *App) Echo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := a.db.EchoTask("echoKey")
+	resp := a.DbSrv.EchoTask("echoKey")
 	fmt.Fprint(w, resp)
 }
 
