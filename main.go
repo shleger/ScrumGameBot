@@ -11,8 +11,8 @@ func main() {
 
 	app := &handlers.App{DbSrv: datastore.DB}
 
-	http.HandleFunc("/", handlers.PutTask)
-	http.HandleFunc("/tasks", handlers.GetTask)
+	http.HandleFunc("/taskput", makeHandler((app.PutTask)))
+	http.HandleFunc("/taskget", makeHandler((app.GetTask)))
 	http.HandleFunc("/_ah/health", handlers.HealthCheckHandler)
 	http.HandleFunc("/hook", handlers.Hook)
 	http.HandleFunc("/echo", makeHandler((app.Echo)))

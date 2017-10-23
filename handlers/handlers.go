@@ -57,20 +57,20 @@ func Hook(w http.ResponseWriter, r *http.Request) {
 }
 
 //GetTask -- get task by const
-func GetTask(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/tasks" {
+func (a *App) GetTask(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/taskget" {
 		http.NotFound(w, r)
 		return
 	}
 
-	t := datastore.DB.GetToken("TEST_TOKEN", "auth")
+	t := a.DbSrv.GetToken("TEST_TOKEN", "auth")
 	fmt.Fprint(w, t)
 
 }
 
 //PutTask -save task to db
-func PutTask(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+func (a *App) PutTask(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/taskput" {
 		http.NotFound(w, r)
 		return
 	}
@@ -79,7 +79,7 @@ func PutTask(w http.ResponseWriter, r *http.Request) {
 		Description: "Buy milk3",
 	}
 
-	datastore.DB.PutKey("sampletask3", &task)
+	a.DbSrv.PutKey("sampletask3", &task)
 
 	fmt.Fprint(w, "hello from db")
 
