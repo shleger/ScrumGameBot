@@ -4,11 +4,13 @@ go:
   - 1.8.x
 
 install: true
-go_import_path: $HOME/gopath/src/github.com/shleger/ScrumGameBot
+
 
 before_script:
+  - pwd
   - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
   - go vet ./...
-  - go get ./...
+
   
-script: go test ./...
+script:
+  - go test ./...
