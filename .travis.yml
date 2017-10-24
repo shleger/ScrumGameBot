@@ -5,9 +5,8 @@ go:
 
 install: true
 
-go_import_path: 'github.com/shleger/ScrumGameBot/datastore'
-
 before_script:
   - go vet ./...
+  - go get ./...
   
 script: go test ./...
