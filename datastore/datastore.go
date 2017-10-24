@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/shleger/ScrumGameBot/domain"
+	"ScrumGameBot/domain"
 
 	"cloud.google.com/go/datastore"
 )

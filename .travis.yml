@@ -2,5 +2,8 @@ language: go
 
 go:
   - 1.8.x
+
+before_script:
+  - go get github.com/shleger/ScrumGameBot
   
 script: go test ./...

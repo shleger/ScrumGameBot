@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/shleger/ScrumGameBot/datastore"
-	"github.com/shleger/ScrumGameBot/domain"
+	"ScrumGameBot/datastore"
+	"ScrumGameBot/domain"
 )
 
 type App struct {
