@@ -2,8 +2,10 @@ language: go
 
 go:
   - 1.8.x
-  
-go_import_path: github.com/shleger/ScrumGameBot
+
+install: true
+
+go_import_path: 'github.com/shleger/ScrumGameBot/datastore'
 
 before_script:
   - go vet ./...
