@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	"ScrumGameBot/datastore"
-	"ScrumGameBot/domain"
 	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/shleger/ScrumGameBot/datastore"
+	"github.com/shleger/ScrumGameBot/domain"
 )
 
 var (
