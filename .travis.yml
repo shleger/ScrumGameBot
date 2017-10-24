@@ -8,8 +8,10 @@ install: true
 
 before_script:
   - pwd
+  - echo $GOPATH
   - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
   - go vet ./...
+  - go get -v cloud.google.com/go/datastore
 
   
 script:
