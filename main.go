@@ -1,10 +1,11 @@
 package main
 
 import (
-	"ScrumGameBot/datastore"
-	"ScrumGameBot/handlers"
 	"log"
 	"net/http"
+
+	"github.com/shleger/ScrumGameBot/datastore"
+	"github.com/shleger/ScrumGameBot/handlers"
 )
 
 func main() {
