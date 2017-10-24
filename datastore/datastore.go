@@ -20,6 +20,8 @@ var (
 
 func init() {
 	println("Init newDatastoreDB")
+
+	//TODO rm init db
 	DB, err = newDatastoreDB()
 	log.Printf("Init Datastore done for GCLOUD_PROJECT=[%s]", gcid())
 

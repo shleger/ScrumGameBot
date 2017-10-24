@@ -2,8 +2,10 @@ language: go
 
 go:
   - 1.8.x
+  
+go_import_path: github.com/shleger/ScrumGameBot
 
 before_script:
-  - go get github.com/shleger/ScrumGameBot
+  - go vet ./...
   
 script: go test ./...
