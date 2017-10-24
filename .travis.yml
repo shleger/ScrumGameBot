@@ -6,6 +6,7 @@ go:
 install: true
 
 before_script:
+  - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
   - go vet ./...
   - go get ./...
   
