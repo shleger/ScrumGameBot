@@ -1,12 +1,13 @@
 package datastore
 
 import (
-	"ScrumGameBot/domain"
 	"context"
 	"fmt"
 	"log"
 	"os"
 	"time"
+
+	"github.com/shleger/ScrumGameBot/domain"
 
 	"cloud.google.com/go/datastore"
 )

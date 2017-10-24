@@ -1,13 +1,14 @@
 package handlers
 
 import (
-	"ScrumGameBot/datastore"
-	"ScrumGameBot/domain"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/shleger/ScrumGameBot/datastore"
+	"github.com/shleger/ScrumGameBot/domain"
 )
 
 type App struct {
